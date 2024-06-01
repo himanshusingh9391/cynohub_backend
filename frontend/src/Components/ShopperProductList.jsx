@@ -17,19 +17,22 @@ function ProductList({cartItems,handleAddToCart}) {
       getData();
   },[])
 
-  function getData(){
-    fetch("https://shopsy-ikxy.onrender.com/get-image",{
-        method: "get",
-        headers:{
-          "Content-Type" : "application/json",
-          authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
-      }
-
-    }).then((res)=> res.json()).then((data)=>{
-        console.log(data)
-        setAlldata(data.data)
+  function getData() {
+    fetch("http://localhost:5000/get-image", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+        }
     })
+    .then((res) => res.json())
+    .then((data) => {
+        console.log(data);
+        setAlldata(data.data);
+    })
+    .catch((error) => console.error('Error:', error));
 }
+
 
 
   useEffect(()=>{
@@ -46,22 +49,23 @@ function ProductList({cartItems,handleAddToCart}) {
   //   setData(product)
   // }
 
-  const handleSearch = async (event) =>{
-    let key  = event.target.value;
-    if(key){
-    let result = await fetch(` https://shopsy-ikxy.onrender.com/search/${key}`,{
-      headers : {
-        authorization : `bearer ${JSON.parse(localStorage.getItem('token'))}`
-      }
-    });
-    result = await result.json()
-    if(result){
-      setAlldata(result)
+  const handleSearch = async (event) => {
+    let key = event.target.value;
+    if (key) {
+        let result = await fetch(`http://localhost:5000/search/${key}`, {
+            headers: {
+                authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            }
+        });
+        result = await result.json();
+        if (result) {
+            setAlldata(result);
+        }
+    } else {
+        getData();
     }
-  }else{
-    getData();
-  }
-  }
+}
+
 
   return (
     <>

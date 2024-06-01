@@ -25,23 +25,31 @@ function SellerAddProduct() {
     }
 
 
-    function uploadImage(){
-      fetch("https://shopsy-ikxy.onrender.com/uploadseller-image",{
-        method: 'post',
+    function uploadImage() {
+      fetch("http://localhost:5000/uploadseller-image", {
+        method: 'POST',
         crossDomain: true,
-        headers : {
-          'content-Type': 'application/json',
-          Accept : 'application/json',
-          "Access-Control-Allow-Origin": "*",
-          authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
         },
-        body : JSON.stringify({
-          base64: image,title,description,price,discount
+        body: JSON.stringify({
+          base64: image, 
+          title: title, 
+          description: description, 
+          price: price, 
+          discount: discount
         })
-      }).then((res)=>res.json()).then((data)=>console.log(data))
-     navigate('/sellerhome') 
+      })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error('Error:', error));
+    
+      navigate('/sellerhome');
     }
-
+    
   return (
     <>
     <div className='sell-homemain'>

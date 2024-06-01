@@ -17,64 +17,65 @@ function Login() {
         }
     },[])
 
-    const handleLogin= async ()=>{
-        if(email.length==0){
-            alert('Enter email')
-            return
-        }
-        if(password.length<5){
-            Alert('Enter atleast five length password')
-            return
-        }
-        let countUpppercase=0;
-        let countlowecase = 0;
-        let specialCharacters = 0;
+    const handleLogin = async () => {
+    if (email.length === 0) {
+        alert('Enter email');
+        return;
+    }
+    if (password.length < 5) {
+        alert('Enter at least five characters for the password');
+        return;
+    }
 
-        for(let i=0;i<password.length;i++){
-            let specialChars = ['!','@','#','$','%','^','&','*','(',')','<','>',',','.','/']
-            if(specialChars.includes(password[i])){
-                specialCharacters++
-            }
-            else{
-                if(password[i]== password[i].toUpperCase()){
-                    countUpppercase++
-                }
-                if(password[i]== password[i].toLowerCase()){
-                    countlowecase++
-                }
-            }
-        }
+    let countUppercase = 0;
+    let countLowercase = 0;
+    let specialCharacters = 0;
 
-        if(countUpppercase==0){
-            alert('Invalid Form, 0 upper case characters in password')
-            return
-        }
-        if(countlowecase==0){
-            alert('Invalid Form, 0 lower case characters in password')
-            return
-        }
-        if(specialCharacters==0){
-            alert('Invalid Form, 0 special characters case characters in password')
-            return
-        }
-        
-        let result = await fetch('https://shopsy-ikxy.onrender.com/login',{
-            method:'post',
-            body:JSON.stringify({email,password}),
-            headers:{
-                'Content-Type': 'application/json'
+    for (let i = 0; i < password.length; i++) {
+        let specialChars = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<', '>', ',', '.', '/'];
+        if (specialChars.includes(password[i])) {
+            specialCharacters++;
+        } else {
+            if (password[i] === password[i].toUpperCase()) {
+                countUppercase++;
             }
-        });
-        result = await result.json();
-        // console.log(result)
-        if(result.auth){
-        localStorage.setItem('user',JSON.stringify(result.user))
-        localStorage.setItem('token',JSON.stringify(result.auth))
-        navigate('/shopperhome')
-        }else{
-            alert('enter correct details')
+            if (password[i] === password[i].toLowerCase()) {
+                countLowercase++;
+            }
         }
     }
+
+    if (countUppercase === 0) {
+        alert('Invalid Form: No uppercase characters in the password');
+        return;
+    }
+    if (countLowercase === 0) {
+        alert('Invalid Form: No lowercase characters in the password');
+        return;
+    }
+    if (specialCharacters === 0) {
+        alert('Invalid Form: No special characters in the password');
+        return;
+    }
+
+    let result = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    result = await result.json();
+    // console.log(result);
+    if (result.auth) {
+        localStorage.setItem('user', JSON.stringify(result.user));
+        localStorage.setItem('token', JSON.stringify(result.auth));
+        navigate('/shopperhome');
+    } else {
+        alert('Enter correct details');
+    }
+}
+
   return (
     <div className='ss'>
     <div className='Registers'>

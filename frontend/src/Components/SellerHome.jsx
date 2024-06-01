@@ -16,33 +16,36 @@ useEffect(()=>{
     getData();
 },[])
 
-function getData(){
-    fetch("https://shopsy-ikxy.onrender.com/get-image",{
-        method: "get",
-        headers:{
-            "Content-Type" : "application/json",
-            authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+function getData() {
+    fetch("http://localhost:5000/get-image", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
         }
-
-    }).then((res)=> res.json()).then((data)=>{
-        // console.log(data)
-        setAlldata(data.data)
     })
+    .then((res) => res.json())
+    .then((data) => {
+        // console.log(data)
+        setAlldata(data.data);
+    })
+    .catch((error) => console.error('Error:', error));
 }
 
-const deleteProduct = async (id) =>{
-    let result = await fetch(`https://shopsy-ikxy.onrender.com/product/${id}`,{
-        method: 'Delete',
-        headers:{
-            "Content-Type" : "application/json",
-            authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+const deleteProduct = async (id) => {
+    let result = await fetch(`http://localhost:5000/product/${id}`, {
+        method: 'DELETE',
+        headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
         }
     });
-    result= await result.json()
-    if(result){
+    result = await result.json();
+    if (result) {
         getData();
     }
 }
+
 
   return (
     <>
